@@ -10,24 +10,22 @@ const getNews = (req, res, next) => {
 };
 
 const createNewsItem = (req, res, next) => {
-  const {
-    title,
-    description,
-    link,
-    categories,
-    author,
-    date
-  } = req.body;
-  NewsItem.create({
-    title,
-    description,
-    link,
-    categories,
-    author,
-    date
-  })
-    .then((item) => res.status(200)
-      .send(item))
+  const { title, description, guid, categories, author, date } = req.body;
+  NewsItem.create({ title, description, guid, categories, author, date })
+    .then((item) => res.status(200).send(item))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new ValidationError(err.message);
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
+};
+
+const searchNewsItem = (req, res, next) => {
+  NewsItem.findById(req.body.id)
+    .then((item) => res.status(200).send(item))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -45,7 +43,7 @@ const getRssFeed = (req, res, next) => {
         feed.item({
           title: item.title,
           description: item.description,
-          url: item.url,
+          guid: item.guid,
           categories: item.categories,
           author: item.author,
           date: item.date,
@@ -56,11 +54,13 @@ const getRssFeed = (req, res, next) => {
       const xmlFeed = feed.xml();
       res.type('application/rss+xml', 'charset=utf-8')
         .send(xmlFeed);
-    });
+    })
+    .catch(next);
 };
 
 module.exports = {
   getNews,
   createNewsItem,
+  searchNewsItem,
   getRssFeed
 };

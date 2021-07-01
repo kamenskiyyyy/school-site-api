@@ -10,7 +10,7 @@ const NewsItemSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  link: {
+  guid: {
     type: String,
     required: true,
     validate: {
@@ -23,6 +23,9 @@ const NewsItemSchema = mongoose.Schema({
     type: mongoose.Schema.Types.Array,
     required: true,
   },
+  preview: {
+    type: String
+  },
   author: {
     type: String,
     required: true,
@@ -31,6 +34,10 @@ const NewsItemSchema = mongoose.Schema({
   date: {
     type: mongoose.Schema.Types.Date,
     required: true,
+  },
+  public: {
+    type: mongoose.Schema.Types.Boolean,
+    required: true
   }
 });
 
