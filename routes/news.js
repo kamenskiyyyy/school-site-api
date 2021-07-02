@@ -1,3 +1,4 @@
+const { NewsRddFeed } = require('../middlewares/rss');
 const router = require('express').Router();
 
 const {
@@ -10,6 +11,6 @@ const {
 router.get('/', getNews);
 router.post('/', createNewsItem);
 router.post('/search', searchNewsItem);
-router.get('/rss', getRssFeed);
+router.get('/rss', NewsRddFeed);
 
 module.exports = router;
