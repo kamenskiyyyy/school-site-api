@@ -10,6 +10,12 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     required: true,
   },
+  login: {
+    type: String,
+    minlength: 2,
+    maxlength: 30,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -27,8 +33,8 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.findUserByCredentials = function findUserByCredentials(email, password) {
-  return this.findOne({ email })
+userSchema.statics.findUserByCredentials = function findUserByCredentials(login, password) {
+  return this.findOne({ login })
     .select('+password')
     .then((user) => {
       if (!user) {

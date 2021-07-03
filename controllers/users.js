@@ -63,33 +63,34 @@ const updateProfile = (req, res, next) => {
 const createUser = (req, res, next) => {
   const {
     name,
+    login,
     email,
     password,
   } = req.body;
-  if (!email || !name || !password) {
-    throw new ValidationError('Почта или пароль неверные');
+  if (!login || !email || !name || !password) {
+    throw new ValidationError('Почта, логин или пароль неверные');
   }
   bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({
+        login,
         email,
         name,
         password: hash,
       })
         .then((user) => {
-          const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`, { expiresIn: '7d' });
           res.send({
             _id: user._id,
+            login: user.login,
             name: user.name,
             email: user.email,
-            token,
           });
         })
         .catch((err) => {
           if (err.name === 'MongoError' && err.code === 11000) {
-            throw new DuplicateError('Пользователь с таким email уже существует');
+            throw new DuplicateError('Пользователь с таким email или логином уже существует');
           } else if (err.name === 'ValidationError' || err.name === 'CastError') {
-            throw new ValidationError('Пароль или почта некорректны');
+            throw new ValidationError('Пароль, логин или почта некорректны');
           } else {
             next(err);
           }
@@ -101,19 +102,19 @@ const createUser = (req, res, next) => {
 // Авторизация
 const login = (req, res, next) => {
   const {
-    email,
+    login,
     password,
   } = req.body;
-  return User.findUserByCredentials(email, password)
+  return User.findUserByCredentials(login, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`, { expiresIn: '1d' });
       res.status(200)
-        .send({
-          _id: user._id,
-          name: user.name,
-          email: user.email,
-          token,
-        });
+        .cookie('access_token', 'Bearer ' + token, {
+          expires: new Date(Date.now() + 8 * 3600000),
+          maxAge: 36000000,
+          httpOnly: true
+        })
+        .send({ user });
     })
     .catch((err) => next(err));
 };

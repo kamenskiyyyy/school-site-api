@@ -4,13 +4,12 @@ const AuthError = require('../errors/AuthError');
 const { JWT_SECRET, NODE_ENV } = process.env;
 
 const auth = (req, res, next) => {
-  const { authorization } = req.headers;
+  const { access_token } = req.cookies;
 
-  if (!authorization || !authorization.startsWith('Bearer')) {
+  if (!access_token || !access_token.startsWith('Bearer')) {
     throw new AuthError('Необходима авторизация');
   }
-
-  const token = authorization.replace('Bearer ', '');
+  const token = access_token.replace('Bearer ', '');
   let payload;
 
   try {

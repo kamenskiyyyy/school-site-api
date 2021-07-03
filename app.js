@@ -11,6 +11,7 @@ const {
   requestLogger,
   errorLogger,
 } = require('./middlewares/logger');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const {
@@ -21,6 +22,7 @@ const {
 
 const app = express();
 app.use(helmet());
+app.use(cookieParser());
 
 mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/school-site', {
   useNewUrlParser: true,
@@ -38,7 +40,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(requestLogger);
-
 app.use(limiter);
 
 app.use(routes);
