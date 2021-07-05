@@ -17,7 +17,8 @@ const {
 const getMyUser = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(new NotFoundError('Нет пользователя с таким id'))
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(200)
+      .send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         throw new ValidationError('Id неверный');
@@ -66,9 +67,10 @@ const createUser = (req, res, next) => {
     login,
     email,
     password,
+    role,
   } = req.body;
-  if (!login || !email || !name || !password) {
-    throw new ValidationError('Почта, логин или пароль неверные');
+  if (!login || !email || !name || !password || !role) {
+    throw new ValidationError('Данные неверные');
   }
   bcrypt.hash(password, 10)
     .then((hash) => {
@@ -77,14 +79,10 @@ const createUser = (req, res, next) => {
         email,
         name,
         password: hash,
+        role,
       })
         .then((user) => {
-          res.send({
-            _id: user._id,
-            login: user.login,
-            name: user.name,
-            email: user.email,
-          });
+          res.send({ user });
         })
         .catch((err) => {
           if (err.name === 'MongoError' && err.code === 11000) {
@@ -110,13 +108,29 @@ const login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`, { expiresIn: '1d' });
       res.status(200)
         .cookie('access_token', 'Bearer ' + token, {
-          expires: new Date(Date.now() + 8 * 3600000),
           maxAge: 36000000,
           httpOnly: true
         })
-        .send({ user });
+        .cookie('logged', 'true', {
+          maxAge: 36000000,
+        })
+        .send({
+          _id: user._id,
+          login: user.login,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          position: user.position
+        });
     })
     .catch((err) => next(err));
+};
+
+const logout = (req, res, next) => {
+  res.status(200)
+    .cookie('access_token', 'false')
+    .cookie('logged', 'false')
+    .catch(next);
 };
 
 module.exports = {
@@ -124,4 +138,5 @@ module.exports = {
   updateProfile,
   createUser,
   login,
+  logout,
 };

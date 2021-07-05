@@ -23,6 +23,7 @@ const {
 const app = express();
 app.use(helmet());
 app.use(cookieParser());
+app.use(express.static('public'));
 
 mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/school-site', {
   useNewUrlParser: true,

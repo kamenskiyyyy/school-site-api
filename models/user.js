@@ -10,11 +10,16 @@ const userSchema = new mongoose.Schema({
     maxlength: 30,
     required: true,
   },
+  avatar: {
+    type: String,
+    required: false
+  },
   login: {
     type: String,
     minlength: 2,
     maxlength: 30,
     required: true,
+    unique: true,
   },
   email: {
     type: String,
@@ -31,6 +36,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
+  role: {
+    type: String,
+    required: true,
+  },
+  position: {
+    type: String,
+    required: true,
+  },
+  subjects: {
+    type: mongoose.Schema.Types.Array,
+    required: false
+  }
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(login, password) {
