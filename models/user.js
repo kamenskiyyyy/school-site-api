@@ -4,6 +4,10 @@ const bcrypt = require('bcrypt');
 const AuthError = require('../errors/AuthError');
 
 const userSchema = new mongoose.Schema({
+  work: {
+    type: mongoose.Schema.Types.Boolean,
+    required: true
+  },
   name: {
     type: String,
     minlength: 2,
@@ -45,6 +49,10 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   subjects: {
+    type: mongoose.Schema.Types.Array,
+    required: false
+  },
+  category: {
     type: mongoose.Schema.Types.Array,
     required: false
   }
