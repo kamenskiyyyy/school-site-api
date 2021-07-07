@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
 
 const NewsItemSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
@@ -13,18 +12,14 @@ const NewsItemSchema = mongoose.Schema({
   guid: {
     type: String,
     required: true,
-    validate: {
-      validator(url) {
-        return validator.isURL(url);
-      },
-    },
   },
   categories: {
-    type: mongoose.Schema.Types.Array,
+    type: String,
     required: true,
   },
   preview: {
-    type: String
+    type: String,
+    required: false,
   },
   author: {
     type: String,
@@ -35,10 +30,10 @@ const NewsItemSchema = mongoose.Schema({
     type: mongoose.Schema.Types.Date,
     required: true,
   },
-  public: {
+  isPublic: {
     type: mongoose.Schema.Types.Boolean,
-    required: true
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model('newsItem', NewsItemSchema);

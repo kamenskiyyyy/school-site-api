@@ -6,7 +6,7 @@ const AuthError = require('../errors/AuthError');
 const userSchema = new mongoose.Schema({
   work: {
     type: mongoose.Schema.Types.Boolean,
-    required: true
+    required: true,
   },
   name: {
     type: String,
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   },
   avatar: {
     type: String,
-    required: false
+    required: false,
   },
   login: {
     type: String,
@@ -50,12 +50,12 @@ const userSchema = new mongoose.Schema({
   },
   subjects: {
     type: mongoose.Schema.Types.Array,
-    required: false
+    required: false,
   },
   category: {
     type: mongoose.Schema.Types.Array,
-    required: false
-  }
+    required: false,
+  },
 });
 
 userSchema.statics.findUserByCredentials = function findUserByCredentials(login, password) {

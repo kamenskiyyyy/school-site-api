@@ -9,12 +9,12 @@ const { validateSignUp, validateSignIn } = require('../middlewares/validation');
 
 router.post('/signin', validateSignIn, login);
 router.post('/signup', validateSignUp, createUser);
-router.use('/news', newsRouter);
-router.use('/public', publicRouter);
+router.use('/', publicRouter);
 
 router.use(auth);
 
 router.use('/users', usersRouter);
+router.use('/news', newsRouter);
 
 router.all('*', () => {
   throw new NotFoundError('Такой страницы не существует');

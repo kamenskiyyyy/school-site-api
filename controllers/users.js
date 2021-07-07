@@ -98,7 +98,7 @@ const createUser = (req, res, next) => {
 };
 
 // Авторизация
-const login = (req, res, next) => {
+const auth = (req, res, next) => {
   const {
     login,
     password,
@@ -107,9 +107,9 @@ const login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'}`, { expiresIn: '1d' });
       res.status(200)
-        .cookie('access_token', 'Bearer ' + token, {
+        .cookie('access_token', `Bearer ${token}`, {
           maxAge: 36000000,
-          httpOnly: true
+          httpOnly: true,
         })
         .cookie('logged', 'true', {
           maxAge: 36000000,
@@ -120,7 +120,9 @@ const login = (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
-          position: user.position
+          position: user.position,
+          subjects: user.subjects,
+          avatar: user.avatar,
         });
     })
     .catch((err) => next(err));
@@ -137,6 +139,6 @@ module.exports = {
   getMyUser,
   updateProfile,
   createUser,
-  login,
+  login: auth,
   logout,
 };

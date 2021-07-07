@@ -25,7 +25,6 @@ const validateSignIn = celebrate({
   }),
 });
 
-
 module.exports = {
   validateUserInfo,
   validateSignUp,

@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { errors } = require('celebrate');
+const cookieParser = require('cookie-parser');
 const routes = require('./routes');
 const errorsHandler = require('./middlewares/errorsHandler');
 const limiter = require('./middlewares/rateLimiter');
@@ -11,7 +12,6 @@ const {
   requestLogger,
   errorLogger,
 } = require('./middlewares/logger');
-const cookieParser = require('cookie-parser');
 
 dotenv.config();
 const {
