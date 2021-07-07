@@ -1,5 +1,6 @@
 const NewsItem = require('../models/news');
 const ValidationError = require('../errors/ValidationError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const getNews = (req, res, next) => {
   NewsItem.find({ isPublic: true })
@@ -39,6 +40,42 @@ const createNewsItem = (req, res, next) => {
     .catch(next);
 };
 
+const editNewsItem = (req, res, next) => {
+  const {
+    id,
+    title,
+    categories,
+    isPublic,
+    description,
+    guid,
+    author,
+    date,
+  } = req.body;
+  NewsItem.findByIdAndUpdate(id, {
+    title,
+    categories,
+    isPublic,
+    description,
+    guid,
+    author,
+    date,
+  }, {
+    new: true,
+    runValidators: true,
+  })
+    .orFail(new NotFoundError('Нет новости с таким Id'))
+    .then(() => res.status(200)
+      .send('Статья обновлена!'))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new ValidationError(err.message);
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
+};
+
 const searchNewsItem = (req, res, next) => {
   const { url } = req.body;
   NewsItem.find({ guid: url })
@@ -57,5 +94,6 @@ const searchNewsItem = (req, res, next) => {
 module.exports = {
   getNews,
   createNewsItem,
+  editNewsItem,
   searchNewsItem,
 };

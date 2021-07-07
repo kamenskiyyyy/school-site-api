@@ -5,7 +5,7 @@ const { getNews } = require('../controllers/news');
 const { getAllTeachers } = require('../controllers/public');
 
 router.get('/news', getNews);
-router.post('/news/getNews', searchNewsItem);
+router.post('/news/getNew', searchNewsItem);
 router.get('/public/teachers', getAllTeachers);
 router.get('/rss', NewsRddFeed);
 
