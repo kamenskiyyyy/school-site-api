@@ -6,24 +6,20 @@ const NewsRddFeed = (req, res, next) => {
     title: 'Новости ГБОУ СОШ 390',
     description: 'Лента новостей и событий школы №390 Санкт-Петербурга',
     feed_url: 'http://localhost:3030/rss.xml',
-    site_url: 'http://localhost:3030',
+    site_url: 'http://localhost:3000',
     language: 'ru',
-    categories: ['Важное', 'Новости'],
-    pubDate: 'July 1, 2021 13:36:00 +0000'
+    pubDate: 'July 1, 2021 13:36:00 +0000',
   });
 
-  NewsItem.find({ public: true })
+  NewsItem.find({ isPublic: true })
     .then((result) => {
-      result.reverse().map((item) => {
-        feed.item({
-          title: item.title,
-          description: item.description,
-          guid: 'http://localhost:3000' + item.guid,
-          categories: item.categories,
-          author: item.author,
-          date: item.date,
-        });
-      });
+      result.reverse().map((item) => feed.item({
+        title: item.title,
+        description: item.description,
+        guid: `http://localhost:3000${item.guid}`,
+        author: item.author,
+        date: item.date,
+      }));
     })
     .then(() => {
       const xmlFeed = feed.xml();
@@ -33,5 +29,5 @@ const NewsRddFeed = (req, res, next) => {
 };
 
 module.exports = {
-  NewsRddFeed
+  NewsRddFeed,
 };
