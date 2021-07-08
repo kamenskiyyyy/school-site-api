@@ -12,6 +12,7 @@ const NewsItemSchema = mongoose.Schema({
   guid: {
     type: String,
     required: true,
+    unique: true
   },
   categories: {
     type: String,

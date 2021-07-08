@@ -1,10 +1,12 @@
 const Pages = require('../models/pages');
+const Nav = require('../models/nav');
 const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 
 const getPage = (req, res, next) => {
   Pages.find({ link: req.body.url })
-    .then((page) => res.status(200).send(page))
+    .then((page) => res.status(200)
+      .send(page))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -13,7 +15,7 @@ const getPage = (req, res, next) => {
       }
     })
     .catch(next);
-}
+};
 
 const createPage = (req, res, next) => {
   const {
@@ -21,6 +23,7 @@ const createPage = (req, res, next) => {
     description,
     link,
     isPublic,
+    nav
   } = req.body;
   Pages.create({
     title,
@@ -28,7 +31,12 @@ const createPage = (req, res, next) => {
     link,
     isPublic,
   })
-    .then(() => res.status(200).send('Страница создана!'))
+    .then(() => {
+      Nav.create(nav)
+        .then(() => res.status(200));
+      res.status(200)
+        .send('Страница создана!');
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -70,10 +78,18 @@ const editPage = (req, res, next) => {
 };
 
 const deletePage = (req, res, next) => {
-  const pageId = req.body.id;
+  const {
+    pageId,
+    navId
+  } = req.body;
   Pages.findByIdAndDelete(pageId)
     .orFail(new NotFoundError('Такой страницы не существует'))
-    .then(() => res.status(200).send("Страница успешно удалена"))
+    .then(() => {
+      Nav.findByIdAndDelete(navId)
+        .orFail(new NotFoundError('Такой страницы в меню не существует'));
+      res.status(200)
+        .send('Страница успешно удалена');
+    })
     .catch(next);
 };
 
@@ -82,4 +98,4 @@ module.exports = {
   createPage,
   editPage,
   deletePage
-}
+};
