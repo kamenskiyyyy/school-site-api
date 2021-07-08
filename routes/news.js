@@ -6,6 +6,6 @@ const {
 } = require('../controllers/news');
 
 router.post('/create', createNewsItem);
-router.post('/edit', editNewsItem);
+router.patch('/edit', editNewsItem);
 
 module.exports = router;
