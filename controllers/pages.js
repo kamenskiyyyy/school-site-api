@@ -6,7 +6,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const getPage = (req, res, next) => {
   const { url } = req.body;
   Pages.find({ link: url })
-    .then((page) => res.status(200).send(page))
+    .then((page) => res.status(200)
+      .send(page))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -69,7 +70,8 @@ const editPage = (req, res, next) => {
     runValidators: true,
   })
     .orFail(new NotFoundError('Нет страницы с таким Id'))
-    .then(() => res.status(200).send('Страница обновлена!'))
+    .then(() => res.status(200)
+      .send('Страница обновлена!'))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -83,16 +85,10 @@ const editPage = (req, res, next) => {
 const deletePage = (req, res, next) => {
   const {
     pageId,
-    navId
   } = req.body;
   Pages.findByIdAndDelete(pageId)
     .orFail(new NotFoundError('Такой страницы не существует'))
-    .then(() => {
-      Nav.findByIdAndDelete(navId)
-        .orFail(new NotFoundError('Такой страницы в меню не существует'));
-      res.status(200)
-        .send('Страница успешно удалена');
-    })
+    .then(() => res.status(200))
     .catch(next);
 };
 

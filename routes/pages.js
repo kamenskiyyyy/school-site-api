@@ -8,6 +8,7 @@ const {
 
 router.post('/create', createPage);
 router.patch('/edit', editPage);
+router.patch('/archive', editPage);
 router.delete('/delete', deletePage);
 
 module.exports = router;
