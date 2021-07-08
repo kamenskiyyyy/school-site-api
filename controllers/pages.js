@@ -4,9 +4,9 @@ const ValidationError = require('../errors/ValidationError');
 const NotFoundError = require('../errors/NotFoundError');
 
 const getPage = (req, res, next) => {
-  Pages.find({ link: req.body.url })
-    .then((page) => res.status(200)
-      .send(page))
+  const { url } = req.body;
+  Pages.find({ link: url })
+    .then((page) => res.status(200).send(page))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);
@@ -23,7 +23,8 @@ const createPage = (req, res, next) => {
     description,
     link,
     isPublic,
-    nav
+    idMenu,
+    menu
   } = req.body;
   Pages.create({
     title,
@@ -32,7 +33,10 @@ const createPage = (req, res, next) => {
     isPublic,
   })
     .then(() => {
-      Nav.create(nav)
+      Nav.findByIdAndUpdate(idMenu, { dropMenu: menu }, {
+        new: true,
+        runValidators: true,
+      })
         .then(() => res.status(200));
       res.status(200)
         .send('Страница создана!');
@@ -64,9 +68,8 @@ const editPage = (req, res, next) => {
     new: true,
     runValidators: true,
   })
-    .orFail(new NotFoundError('Нет новости с таким Id'))
-    .then(() => res.status(200)
-      .send('Статья обновлена!'))
+    .orFail(new NotFoundError('Нет страницы с таким Id'))
+    .then(() => res.status(200).send('Страница обновлена!'))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);

@@ -7,19 +7,15 @@ const NavSchema = mongoose.Schema({
   },
   path: {
     type: String,
+    unique: false,
     required: false,
-    unique: true
+    sparse: true
   },
   dropMenu: {
-    name: {
-      type: String,
-      required: false,
-    },
-    path: {
-      type: String,
-      required: false,
-      unique: true
-    },
+    type: mongoose.Schema.Types.Mixed,
+    required: false,
+    unique: false,
+    sparse: true,
   },
 });
 

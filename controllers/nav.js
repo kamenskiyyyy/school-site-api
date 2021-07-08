@@ -1,5 +1,6 @@
 const Nav = require('../models/nav');
 const NotFoundError = require('../errors/NotFoundError');
+const ValidationError = require('../errors/ValidationError');
 
 const getNav = (req, res, next) => {
   Nav.find()
@@ -8,14 +9,15 @@ const getNav = (req, res, next) => {
 };
 
 const createNavManual = (req, res, next) => {
-  const {
-    name,
-    path,
-    dropMenu
-  } = req.body;
-  Nav.create(name, path, dropMenu)
-    .then((nav) => res.status(200)
-      .send(nav))
+  Nav.create(req.body)
+    .then(() => res.status(200).send('Ссылка успешно создана!'))
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new ValidationError('Id неверный');
+      } else {
+        next(err);
+      }
+    })
     .catch(next);
 };
 

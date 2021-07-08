@@ -9,7 +9,7 @@ const { NewsRddFeed } = require('../middlewares/rss');
 const { getAllTeachers } = require('../controllers/public');
 
 router.get('/news', getNews);
-router.get('/page', getPage);
+router.post('/page', getPage);
 router.get('/nav', getNav);
 router.post('/news/getNew', searchNewsItem);
 router.get('/public/teachers', getAllTeachers);
