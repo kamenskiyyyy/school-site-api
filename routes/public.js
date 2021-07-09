@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {
-  searchNewsItem,
+  getNewsItem,
   getNews
 } = require('../controllers/news');
 const { getPage } = require('../controllers/pages');
@@ -11,8 +11,8 @@ const { getAllTeachers } = require('../controllers/public');
 router.get('/news', getNews);
 router.post('/page', getPage);
 router.get('/nav', getNav);
-router.post('/news/getNew', searchNewsItem);
-router.get('/public/teachers', getAllTeachers);
+router.post('/news/getNew', getNewsItem);
+router.get('/teachers', getAllTeachers);
 router.get('/rss', NewsRddFeed);
 
 module.exports = router;

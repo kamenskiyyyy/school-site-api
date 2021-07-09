@@ -9,6 +9,21 @@ const getNews = (req, res, next) => {
     .catch(next);
 };
 
+const getNewsItem = (req, res, next) => {
+  const { url } = req.body;
+  NewsItem.find({ guid: url })
+    .then((item) => res.status(200)
+      .send(item))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        throw new ValidationError(err.message);
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
+};
+
 const createNewsItem = (req, res, next) => {
   const {
     title,
@@ -58,7 +73,7 @@ const editNewsItem = (req, res, next) => {
     description,
     guid,
     author,
-    date,
+    date
   }, {
     new: true,
     runValidators: true,
@@ -76,18 +91,20 @@ const editNewsItem = (req, res, next) => {
     .catch(next);
 };
 
-const searchNewsItem = (req, res, next) => {
-  const { url } = req.body;
-  NewsItem.find({ guid: url })
-    .then((item) => res.status(200)
-      .send(item))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new ValidationError(err.message);
-      } else {
-        next(err);
-      }
-    })
+const archiveNewsItem = (req, res, next) => {
+  NewsItem.findByIdAndUpdate(req.body.id, { isPublic: false }, {
+    new: true,
+    runValidators: true,
+  })
+    .orFail(new NotFoundError('Нет новости с таким Id'))
+    .then(() => res.status(200))
+    .catch(next);
+};
+
+const deleteNewsItem = (req, res, next) => {
+  NewsItem.findByIdAndDelete(req.body.id)
+    .orFail(new NotFoundError('Нет новости с таким Id'))
+    .then(() => res.status(200))
     .catch(next);
 };
 
@@ -95,5 +112,7 @@ module.exports = {
   getNews,
   createNewsItem,
   editNewsItem,
-  searchNewsItem,
+  getNewsItem,
+  archiveNewsItem,
+  deleteNewsItem
 };
