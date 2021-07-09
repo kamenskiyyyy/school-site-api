@@ -57,6 +57,17 @@ const createNewsItem = (req, res, next) => {
     .catch(next);
 };
 
+const uploadImage = (req, res) => {
+  const file = req.files.upload;
+  const path = file.path.replace(/^public\//, '');
+  res.status(200)
+    .send({
+      fileName: file.name,
+      uploaded: 1,
+      url: 'http://localhost:3030/' + path
+    });
+};
+
 const editNewsItem = (req, res, next) => {
   const {
     id,
@@ -115,6 +126,7 @@ const deleteNewsItem = (req, res, next) => {
 module.exports = {
   getNews,
   createNewsItem,
+  uploadImage,
   editNewsItem,
   getNewsItem,
   archiveNewsItem,

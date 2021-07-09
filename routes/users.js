@@ -6,8 +6,8 @@ const {
   logout,
 } = require('../controllers/users');
 
-router.get('/me', getMyUser); // возвращает информацию о пользователе (email и имя)
-router.patch('/me', validateUserInfo, updateProfile); // обновляет информацию о пользователе (email и имя)
-router.get('/logout', logout); // обновляет информацию о пользователе (email и имя)
+router.get('/me', getMyUser); 
+router.patch('/me', validateUserInfo, updateProfile); 
+router.get('/logout', logout); 
 
 module.exports = router;
