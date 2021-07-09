@@ -128,11 +128,11 @@ const auth = (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const logout = (req, res, next) => {
+const logout = (req, res) => {
   res.status(200)
     .cookie('access_token', 'false')
     .cookie('logged', 'false')
-    .catch(next);
+    .send('Вы вышли из аккаунта!')
 };
 
 module.exports = {
