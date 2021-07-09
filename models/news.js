@@ -18,7 +18,7 @@ const NewsItemSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  preview: {
+  cover: {
     type: String,
     required: false,
   },
