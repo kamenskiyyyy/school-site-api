@@ -12,6 +12,7 @@ const getNews = (req, res, next) => {
 const getNewsItem = (req, res, next) => {
   const { url } = req.body;
   NewsItem.find({ guid: url })
+    .orFail(new NotFoundError('Нет новости с таким Id'))
     .then((item) => res.status(200)
       .send(item))
     .catch((err) => {

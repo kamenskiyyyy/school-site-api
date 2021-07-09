@@ -6,8 +6,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const getPage = (req, res, next) => {
   const { url } = req.body;
   Pages.find({ link: url })
-    .then((page) => res.status(200)
-      .send(page))
+    .orFail(new NotFoundError('Нет страницы с таким Id'))
+    .then((page) => res.status(200).send(page))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new ValidationError(err.message);

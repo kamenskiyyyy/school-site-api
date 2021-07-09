@@ -7,7 +7,7 @@ const {
 } = require('../controllers/users');
 
 router.get('/me', getMyUser); 
-router.patch('/me', validateUserInfo, updateProfile); 
+router.patch('/update', validateUserInfo, updateProfile); 
 router.get('/logout', logout); 
 
 module.exports = router;
