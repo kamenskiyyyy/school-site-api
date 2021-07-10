@@ -9,11 +9,9 @@ const auth = require('../middlewares/auth');
 const { login, createUser, uploadUserAvatar } = require('../controllers/users');
 const { validateSignIn, validateSignUp } = require('../middlewares/validation');
 const multiparty = require('connect-multiparty');
-
 const MultipartyMiddleware = multiparty({uploadDir: './public/avatar'});
 
 router.post('/signin', validateSignIn, login);
-
 router.use('/', publicRouter);
 
 router.use(auth);

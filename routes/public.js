@@ -7,12 +7,13 @@ const {
 const { getPage } = require('../controllers/pages');
 const { getNav } = require('../controllers/nav');
 const { NewsRddFeed } = require('../middlewares/rss');
-const { getAllTeachers } = require('../controllers/public');
+const { getAllTeachers, getTeacher } = require('../controllers/public');
 
 router.get('/news', getNews);
 router.post('/page', getPage);
 router.get('/nav', getNav);
 router.post('/news/getNew', getNewsItem);
+router.post('/teachers/:id', getTeacher);
 router.get('/teachers', getAllTeachers);
 router.get('/rss', NewsRddFeed);
 
