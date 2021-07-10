@@ -5,6 +5,8 @@ const User = require('../models/user');
 const ValidationError = require('../errors/ValidationError');
 const DuplicateError = require('../errors/DuplicateError');
 const NotFoundError = require('../errors/NotFoundError');
+const fs = require('fs');
+
 
 dotenv.config();
 
@@ -12,22 +14,6 @@ const {
   NODE_ENV,
   JWT_SECRET,
 } = process.env;
-
-// Получить данные о текущем пользователе
-const getMyUser = (req, res, next) => {
-  User.findById(req.user._id)
-    .orFail(new NotFoundError('Нет пользователя с таким id'))
-    .then((user) => res.status(200)
-      .send(user))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new ValidationError('Id неверный');
-      } else {
-        next(err);
-      }
-    })
-    .catch(next);
-};
 
 // Обновить данные пользователя
 const updateProfile = (req, res, next) => {
@@ -60,29 +46,39 @@ const updateProfile = (req, res, next) => {
     .catch(next);
 };
 
+const uploadUserAvatar = (req, res) => {
+  const file = req.files.avatar;
+  const path = file.path.replace(/^public\//, '');
+  res.status(200)
+    .send({
+      url: '/' + path
+    });
+};
+
 // Создание пользователя
 const createUser = (req, res, next) => {
-  const {
-    name,
-    login,
-    email,
-    password,
-    role,
+  const { name, position, subjects, category, email, login, password, role, work, avatar
   } = req.body;
-  if (!login || !email || !name || !password || !role) {
+  if (!login || !email || !name || !password) {
     throw new ValidationError('Данные неверные');
   }
+  console.log(req.file);
   bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({
-        login,
-        email,
         name,
+        position,
+        subjects,
+        category,
+        email,
+        login,
         password: hash,
         role,
+        work,
+        avatar
       })
         .then((user) => {
-          res.send({ user });
+          res.send('Пользователь создан!');
         })
         .catch((err) => {
           if (err.name === 'MongoError' && err.code === 11000) {
@@ -136,8 +132,8 @@ const logout = (req, res) => {
 };
 
 module.exports = {
-  getMyUser,
   updateProfile,
+  uploadUserAvatar,
   createUser,
   login: auth,
   logout,

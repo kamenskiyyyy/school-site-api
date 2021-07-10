@@ -11,10 +11,16 @@ const validateUserInfo = celebrate({
 
 const validateSignUp = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    login: Joi.string().required().min(2).max(30),
+    name: Joi.string().required().min(2).max(40),
+    position: Joi.string().min(2),
+    subjects: Joi.array(),
+    category: Joi.array(),
     email: Joi.string().required().email(),
+    login: Joi.string().required().min(2).max(30),
     password: Joi.string().required(),
+    role: Joi.string().required(),
+    work: Joi.string().required(),
+    avatar: Joi.string()
   }),
 });
 

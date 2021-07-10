@@ -6,15 +6,19 @@ const navRouter = require('./nav');
 const publicRouter = require('./public');
 const NotFoundError = require('../errors/NotFoundError');
 const auth = require('../middlewares/auth');
-const { login, createUser } = require('../controllers/users');
-const { validateSignUp, validateSignIn } = require('../middlewares/validation');
+const { login, createUser, uploadUserAvatar } = require('../controllers/users');
+const { validateSignIn, validateSignUp } = require('../middlewares/validation');
+const multiparty = require('connect-multiparty');
+
+const MultipartyMiddleware = multiparty({uploadDir: './public/avatar'});
 
 router.post('/signin', validateSignIn, login);
-router.post('/signup', validateSignUp, createUser);
+
 router.use('/', publicRouter);
 
 router.use(auth);
-
+router.post('/create-user', validateSignUp, createUser);
+router.post('/create-user/upload-avatar', MultipartyMiddleware, uploadUserAvatar);
 router.use('/users', usersRouter);
 router.use('/news', newsRouter);
 router.use('/pages', pagesRouter);
