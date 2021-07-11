@@ -35,6 +35,7 @@ const createNewsItem = (req, res, next) => {
     guid,
     author,
     date,
+    isPreview,
   } = req.body;
   NewsItem.create({
     title,
@@ -45,6 +46,7 @@ const createNewsItem = (req, res, next) => {
     guid,
     author,
     date,
+    isPreview
   })
     .then(() => res.status(200)
       .send('Статья добавлена!'))
@@ -80,6 +82,7 @@ const editNewsItem = (req, res, next) => {
     guid,
     author,
     date,
+    isPreview
   } = req.body;
   NewsItem.findByIdAndUpdate(id, {
     title,
@@ -89,7 +92,8 @@ const editNewsItem = (req, res, next) => {
     cover,
     guid,
     author,
-    date
+    date,
+    isPreview
   }, {
     new: true,
     runValidators: true,

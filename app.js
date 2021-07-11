@@ -23,7 +23,6 @@ const {
 const app = express();
 app.use(helmet());
 app.use(cookieParser());
-app.use(express.static('public'));
 
 mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017/school-site', {
   useNewUrlParser: true,
@@ -33,9 +32,11 @@ mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017
 });
 
 app.use(cors({
-  origin: NODE_ENV === 'production' ? 'https://movies.kamenskiyyyy.nomoredomains.icu' : 'http://localhost:3000',
+  origin: NODE_ENV === 'production' ? 'https://movies.kamenskiyyyy.nomoredomains.icu' : ['http://localhost:3000/', 'http://localhost:3000'],
   credentials: true,
 }));
+
+app.use(express.static('public'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

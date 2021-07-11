@@ -35,6 +35,10 @@ const NewsItemSchema = mongoose.Schema({
     type: mongoose.Schema.Types.Boolean,
     required: true,
   },
+  isPreview: {
+    type: mongoose.Schema.Types.Boolean,
+    required: false,
+  }
 });
 
 module.exports = mongoose.model('newsItem', NewsItemSchema);
