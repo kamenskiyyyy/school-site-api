@@ -5,8 +5,6 @@ const User = require('../models/user');
 const ValidationError = require('../errors/ValidationError');
 const DuplicateError = require('../errors/DuplicateError');
 const NotFoundError = require('../errors/NotFoundError');
-const fs = require('fs');
-
 
 dotenv.config();
 
@@ -51,18 +49,18 @@ const uploadUserAvatar = (req, res) => {
   const path = file.path.replace(/^public\//, '');
   res.status(200)
     .send({
-      url: '/' + path
+      url: `/${path}`,
     });
 };
 
 // Создание пользователя
 const createUser = (req, res, next) => {
-  const { name, position, subjects, category, email, login, password, role, work, avatar
+  const {
+    name, position, subjects, category, email, login, password, role, work, avatar,
   } = req.body;
   if (!login || !email || !name || !password) {
     throw new ValidationError('Данные неверные');
   }
-  console.log(req.file);
   bcrypt.hash(password, 10)
     .then((hash) => {
       User.create({
@@ -75,9 +73,9 @@ const createUser = (req, res, next) => {
         password: hash,
         role,
         work,
-        avatar
+        avatar,
       })
-        .then((user) => {
+        .then(() => {
           res.send('Пользователь создан!');
         })
         .catch((err) => {
@@ -128,7 +126,7 @@ const logout = (req, res) => {
   res.status(200)
     .cookie('access_token', 'false')
     .cookie('logged', 'false')
-    .send('Вы вышли из аккаунта!')
+    .send('Вы вышли из аккаунта!');
 };
 
 module.exports = {

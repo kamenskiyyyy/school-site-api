@@ -4,7 +4,7 @@ const {
   createNewsItem,
   editNewsItem,
   archiveNewsItem,
-  deleteNewsItem
+  deleteNewsItem,
 } = require('../controllers/news');
 
 router.post('/create', createNewsItem);

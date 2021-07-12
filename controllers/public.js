@@ -26,5 +26,5 @@ const getTeacher = (req, res, next) => {
 
 module.exports = {
   getAllTeachers,
-  getTeacher
+  getTeacher,
 };

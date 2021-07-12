@@ -12,7 +12,7 @@ const NewsItemSchema = mongoose.Schema({
   guid: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   categories: {
     type: String,
@@ -38,7 +38,7 @@ const NewsItemSchema = mongoose.Schema({
   isPreview: {
     type: mongoose.Schema.Types.Boolean,
     required: false,
-  }
+  },
 });
 
 module.exports = mongoose.model('newsItem', NewsItemSchema);

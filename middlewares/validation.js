@@ -1,7 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
 
-const urlregexp = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/;
-
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -20,7 +18,7 @@ const validateSignUp = celebrate({
     password: Joi.string().required(),
     role: Joi.string().required(),
     work: Joi.string().required(),
-    avatar: Joi.string()
+    avatar: Joi.string(),
   }),
 });
 

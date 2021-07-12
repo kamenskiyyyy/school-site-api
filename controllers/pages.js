@@ -25,7 +25,7 @@ const createPage = (req, res, next) => {
     link,
     isPublic,
     idMenu,
-    menu
+    menu,
   } = req.body;
   Pages.create({
     title,
@@ -96,5 +96,5 @@ module.exports = {
   getPage,
   createPage,
   editPage,
-  deletePage
+  deletePage,
 };

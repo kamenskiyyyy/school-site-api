@@ -46,7 +46,7 @@ const createNewsItem = (req, res, next) => {
     guid,
     author,
     date,
-    isPreview
+    isPreview,
   })
     .then(() => res.status(200)
       .send('Статья добавлена!'))
@@ -67,7 +67,7 @@ const uploadImage = (req, res) => {
     .send({
       fileName: file.name,
       uploaded: 1,
-      url: 'http://localhost:3030/' + path
+      url: `http://localhost:3030/${path}`,
     });
 };
 
@@ -82,7 +82,7 @@ const editNewsItem = (req, res, next) => {
     guid,
     author,
     date,
-    isPreview
+    isPreview,
   } = req.body;
   NewsItem.findByIdAndUpdate(id, {
     title,
@@ -93,7 +93,7 @@ const editNewsItem = (req, res, next) => {
     guid,
     author,
     date,
-    isPreview
+    isPreview,
   }, {
     new: true,
     runValidators: true,
@@ -135,5 +135,5 @@ module.exports = {
   editNewsItem,
   getNewsItem,
   archiveNewsItem,
-  deleteNewsItem
+  deleteNewsItem,
 };

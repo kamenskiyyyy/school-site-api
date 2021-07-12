@@ -9,7 +9,7 @@ const NavSchema = mongoose.Schema({
     type: String,
     unique: false,
     required: false,
-    sparse: true
+    sparse: true,
   },
   dropMenu: {
     type: mongoose.Schema.Types.Mixed,

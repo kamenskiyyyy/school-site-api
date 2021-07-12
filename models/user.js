@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   work: {
     type: mongoose.Schema.Types.Boolean,
     required: true,
-    default: true
+    default: true,
   },
   name: {
     type: String,

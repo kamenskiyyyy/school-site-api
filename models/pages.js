@@ -12,7 +12,7 @@ const PagesSchema = mongoose.Schema({
   link: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   isPublic: {
     type: mongoose.Schema.Types.Boolean,

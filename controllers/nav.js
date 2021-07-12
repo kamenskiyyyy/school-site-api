@@ -25,12 +25,12 @@ const deleteNavManual = (req, res, next) => {
   const { id } = req.body;
   Nav.findByIdAndDelete(id)
     .orFail(new NotFoundError('Такой ссылки нет в навигации'))
-    .then(() => res.status(200).send("Ссылка удалена"))
+    .then(() => res.status(200).send('Ссылка удалена'))
     .catch(next);
 };
 
 module.exports = {
   getNav,
   createNavManual,
-  deleteNavManual
+  deleteNavManual,
 };

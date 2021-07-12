@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const multiparty = require('connect-multiparty');
 const usersRouter = require('./users');
 const newsRouter = require('./news');
 const pagesRouter = require('./pages');
@@ -8,8 +9,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const auth = require('../middlewares/auth');
 const { login, createUser, uploadUserAvatar } = require('../controllers/users');
 const { validateSignIn, validateSignUp } = require('../middlewares/validation');
-const multiparty = require('connect-multiparty');
-const MultipartyMiddleware = multiparty({uploadDir: './public/avatar'});
+
+const MultipartyMiddleware = multiparty({ uploadDir: './public/avatar' });
 
 router.post('/signin', validateSignIn, login);
 router.use('/', publicRouter);

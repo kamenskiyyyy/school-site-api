@@ -3,7 +3,7 @@ const router = require('express').Router();
 const {
   createPage,
   editPage,
-  deletePage
+  deletePage,
 } = require('../controllers/pages');
 
 router.post('/create', createPage);
