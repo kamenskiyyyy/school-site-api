@@ -1,7 +1,7 @@
 {
-  "name": "movies-explorer-api",
+  "name": "school-site-api",
   "version": "1.0.0",
-  "description": "Дипломный проект выпускника Яндекс.Практикума",
+  "private": true,
   "main": "app.js",
   "scripts": {
     "lint": "npx eslint .",
@@ -9,15 +9,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kamenskiyyyy/movies-explorer-api.git"
-  },
   "author": "Kamenev Nikolay",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kamenskiyyyy/movies-explorer-api/issues"
-  },
   "devDependencies": {
     "eslint": "^7.27.0",
     "eslint-config-airbnb-base": "^14.2.1",
