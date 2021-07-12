@@ -32,7 +32,7 @@ mongoose.connect(NODE_ENV === 'production' ? DB_URL : 'mongodb://localhost:27017
 });
 
 app.use(cors({
-  origin: NODE_ENV === 'production' ? 'https://school-390.kamenev.tech' : ['http://localhost:3000/', 'http://localhost:3000'],
+  origin: NODE_ENV === 'production' ? 'https://school-390.kamenev.tech' : 'http://localhost:3000',
   credentials: true,
 }));
 
