@@ -67,7 +67,7 @@ const uploadImage = (req, res) => {
     .send({
       fileName: file.name,
       uploaded: 1,
-      url: `http://localhost:3030/${path}`,
+      url: `https://https://api.school-390.kamenev.tech/${path}`,
     });
 };
 
