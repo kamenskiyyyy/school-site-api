@@ -13,11 +13,12 @@ const { validateSignIn, validateSignUp } = require('../middlewares/validation');
 const MultipartyMiddleware = multiparty({ uploadDir: './public/avatar' });
 
 router.post('/signin', validateSignIn, login);
+router.post('/create-user', validateSignUp, createUser);
+router.post('/create-user/upload-avatar', MultipartyMiddleware, uploadUserAvatar);
 router.use('/', publicRouter);
 
 router.use(auth);
-router.post('/create-user', validateSignUp, createUser);
-router.post('/create-user/upload-avatar', MultipartyMiddleware, uploadUserAvatar);
+
 router.use('/users', usersRouter);
 router.use('/news', newsRouter);
 router.use('/pages', pagesRouter);
