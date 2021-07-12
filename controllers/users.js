@@ -13,6 +13,21 @@ const {
   JWT_SECRET,
 } = process.env;
 
+// Получить данные о текущем пользователе
+const getMyUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(new NotFoundError('Нет пользователя с таким id'))
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        throw new ValidationError('Id неверный');
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
+};
+
 // Обновить данные пользователя
 const updateProfile = (req, res, next) => {
   const {
@@ -130,6 +145,7 @@ const logout = (req, res) => {
 };
 
 module.exports = {
+  getMyUser,
   updateProfile,
   uploadUserAvatar,
   createUser,
